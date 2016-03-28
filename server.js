@@ -36,4 +36,10 @@ io.sockets.on('connection', function(socket) {
   socket.on('send message', function(data) {
     io.sockets.emit('new message', {msg: data, user: socket.username});
   });
+  
+  socket.on('disconnect', function(data) {
+    if(!socket.username) return;
+    usernames.splice(usernames.indexOf(socket.username), 1);
+    updateUsernames();
+  })
 });
