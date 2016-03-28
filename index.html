@@ -55,7 +55,15 @@
                         }
                     });
                     $username.val('');
-                })
+                });
+                
+                socket.on('usernames', function(data) {
+                   var html = '';
+                   for(i = 0; i < data.length; i++) {
+                       html += data[i] + '<br />';
+                   }
+                   $users.html(html);
+                });
                 
                 $messageForm.submit(function(event) {
                     event.preventDefault();
@@ -64,7 +72,7 @@
                 });
                 
                 socket.on('new message', function(data) {
-                    $chat.append(data.msg + '<br />');
+                    $chat.append('<strong>' + data.user +'</strong>' + data.msg + '<br />');
                 })
             });
         </script>
