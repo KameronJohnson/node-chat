@@ -39,6 +39,23 @@
                 var $messageForm = $('#messageForm');
                 var $message = $('#message');
                 var $chat = $('#chatWindow');
+                var $usernameForm = $('#usernameForm');
+                var $users = $('#users');
+                var $username = $('#username');
+                var $error = $('#error');
+                
+                $usernameForm.submit(function(event) {
+                    event.preventDefault();
+                    socket.emit('new user', $username.val(), function(data) {
+                        if(data){
+                            $('#namesWrapper').hide();
+                            $('#mainWrapper').show();
+                        } else {
+                            $error.html("Username taken, silly!");
+                        }
+                    });
+                    $username.val('');
+                })
                 
                 $messageForm.submit(function(event) {
                     event.preventDefault();
