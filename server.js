@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+var usernames = [];
 
 //middleware
 app.use(express.static(__dirname + '/public'));
@@ -16,8 +17,23 @@ app.get('/', function(req, res) {
 })
 
 io.sockets.on('connection', function(socket) {
+  socket.on('new user', function(data, callback) {
+    if(usernames.indexOf(data) != -1) {
+      callback(false);
+    } else {
+      callback(true)
+      socket.username = data;
+      usernames.push(socket.username);
+      updateUsernames();
+    }
+  });
+  //Update Usernames
+  function updateUsernames() {
+    io.sockets.emit('usernames', usernames);
+  }
+  
   //send message event
   socket.on('send message', function(data) {
-    io.sockets.emit('new message', {msg: data});
+    io.sockets.emit('new message', {msg: data, user: socket.username});
   });
 });

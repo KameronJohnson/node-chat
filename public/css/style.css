@@ -12,6 +12,7 @@ body {
 }
 
 #mainWrapper {
+    display: none;
    
 }
 
@@ -41,7 +42,6 @@ body {
     background: #f4f4f4;
     padding: 10px;
     margin-left: 20px;
-     display: none;
 }
 
 input {
